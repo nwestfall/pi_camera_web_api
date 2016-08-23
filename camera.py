@@ -51,7 +51,7 @@ def getFileName():
 	return dir + '/' + dt.datetime.now().strftime('%Y%m%d%H%M%S') + '.h264'
 
 def cleanUp():
-	past = dt.datetime.now() - timedelta(days=-2)
+	past = dt.datetime.now() - dt.timedelta(days=-2)
 	dir = defaultLoc + past.strftime('%Y%m%d')
 	if os.path.exists(dir):
 		shutil.rmtree(dir, ignore_errors=True)
