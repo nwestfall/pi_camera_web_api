@@ -1,0 +1,38 @@
+mmal: mmal_vc_port_enable: failed to enable port vc.null_sink:in:0(OPQV): ENOSPC
+mmal: mmal_port_enable: failed to enable connected port (vc.null_sink:in:0(OPQV))0x232f160 (ENOSPC)
+mmal: mmal_connection_enable: output port couldn't be enabled
+Traceback (most recent call last):
+  File "camera.py", line 12, in <module>
+    camera = picamera.PiCamera(resolution=(1280, 720), framerate=24)
+  File "/usr/lib/python2.7/dist-packages/picamera/camera.py", line 417, in __init__
+    self._init_preview()
+  File "/usr/lib/python2.7/dist-packages/picamera/camera.py", line 496, in _init_preview
+    self, self._camera.outputs[self.CAMERA_PREVIEW_PORT])
+  File "/usr/lib/python2.7/dist-packages/picamera/renderers.py", line 512, in __init__
+    self.renderer.connect(source)
+  File "/usr/lib/python2.7/dist-packages/picamera/mmalobj.py", line 1465, in connect
+    self._connection = MMALConnection(source, self.inputs[0])
+  File "/usr/lib/python2.7/dist-packages/picamera/mmalobj.py", line 1278, in __init__
+    prefix="Failed to enable connection")
+  File "/usr/lib/python2.7/dist-packages/picamera/exc.py", line 157, in mmal_check
+    raise PiCameraMMALError(status, prefix)
+picamera.exc.PiCameraMMALError: Failed to enable connection: Out of resources (other than memory)
+mmal: mmal_vc_port_enable: failed to enable port vc.null_sink:in:0(OPQV): ENOSPC
+mmal: mmal_port_enable: failed to enable connected port (vc.null_sink:in:0(OPQV))0x1772210 (ENOSPC)
+mmal: mmal_connection_enable: output port couldn't be enabled
+Traceback (most recent call last):
+  File "camera.py", line 12, in <module>
+    camera = picamera.PiCamera(resolution=(1280, 720), framerate=24)
+  File "/usr/lib/python2.7/dist-packages/picamera/camera.py", line 417, in __init__
+    self._init_preview()
+  File "/usr/lib/python2.7/dist-packages/picamera/camera.py", line 496, in _init_preview
+    self, self._camera.outputs[self.CAMERA_PREVIEW_PORT])
+  File "/usr/lib/python2.7/dist-packages/picamera/renderers.py", line 512, in __init__
+    self.renderer.connect(source)
+  File "/usr/lib/python2.7/dist-packages/picamera/mmalobj.py", line 1465, in connect
+    self._connection = MMALConnection(source, self.inputs[0])
+  File "/usr/lib/python2.7/dist-packages/picamera/mmalobj.py", line 1278, in __init__
+    prefix="Failed to enable connection")
+  File "/usr/lib/python2.7/dist-packages/picamera/exc.py", line 157, in mmal_check
+    raise PiCameraMMALError(status, prefix)
+picamera.exc.PiCameraMMALError: Failed to enable connection: Out of resources (other than memory)
