@@ -5,6 +5,7 @@ import os
 import threading
 import shutil
 import json
+import decimal as d
 
 #Setup other settings
 defaultLoc = "/var/www/vids/"
@@ -54,10 +55,19 @@ get the last duraction of a recording
 """
 @app.route('/lastduration', methods=['POST'])
 def last_recording_duration():
-	if lastRecordingDuration != 0:
+	if lastRecordingDuration == 0:
 		return buildJSON(msg = "No recording has start yet", error = True)
-	else
-		return buildJSON(msg = "Last recording was " + lastRecordingDuration + " minutes long")
+	
+	d.getcontext().prec = 2
+	minute = 0
+	second = 0
+	if lastRecordingDuration < 0:
+		second = int(lastRecordingDuration * 60)
+	else:
+		minute = int(lastRecordingDuration)
+		second = int((lastRecordingDuration - minute) * 60)
+
+	return buildJSON(msg = "Last recording was " + str(minute) + " minute(s) and " + str(second) + " second(s) long")
 
 """
 function to run on a background thread to keep the recording and server running
@@ -65,15 +75,18 @@ function to run on a background thread to keep the recording and server running
 def record_in_background():
 	global lastRecordingDuration
 	cleanUp()
-	start = dt.datetime.now()
+	actualstart = dt.datetime.now()
 	while currentlyRecording:
-        camera.annotate_text = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        camera.start_recording(getFileName(), format='h264', quality = quality)
-        while ((dt.datetime.now() - start).days * 24 * 60) < minutesPerFile and currentlyRecording:
-            camera.annotate_text = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            camera.wait_recording(0.5)
-        camera.stop_recording()
-    lastRecordingDuration = (dt.datetime.now() - start).days * 24
+		start = dt.datetime.now()
+		camera.annotate_text = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+		camera.start_recording(getFileName(), format='h264', quality = quality)
+		while (d.Decimal((dt.datetime.now() - start).seconds) / d.Decimal(60)) < d.Decimal(minutesPerFile) and currentlyRecording:
+			camera.annotate_text = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+			camera.wait_recording(0.5)
+		camera.stop_recording()
+
+	#save last duraction
+	lastRecordingDuration = d.Decimal((dt.datetime.now() - actualstart).seconds) / d.Decimal(60)
 
 """
 get file name for video file using timestamp
